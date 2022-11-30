@@ -1,0 +1,50 @@
+{% set name = "deepspeed" %}
+{% set version = "0.7.5" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/microsoft/DeepSpeed 
+  git_rev: v{{ version }}
+
+build:
+  number: 1
+  string: cuda{{ cudatoolkit | replace(".*", "") }}_{{ PKG_BUILDNUM }}
+  script: DS_BUILD_SPARSE_ATTN=0; DS_BUILD_OPS=1; {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
+  script_env:
+    - CUDA_HOME
+  
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - python
+    - pytorch           {{ pytorch }}
+  host:
+    - pip
+    - pytorch           {{ pytorch }}
+    - python
+  run:
+    - hjson-py
+    - ninja             {{ ninja }}
+    - numpy             {{ numpy }}
+    - packaging
+    - psutil            {{ psutil }}
+    - py-cpuinfo
+    - pydantic          {{ pydantic }}
+    - tqdm              {{ tqdm }}
+    - pytorch           {{ pytorch }}
+
+about:
+  home: https://github.com/microsoft/DeepSpeed.git 
+  license: MIT
+  license_file: LICENSE
+  summary: 'DeepSpeed Library: An easy-to-use deep learning optimization software suite.'
+  description: 'DeepSpeed Library: An easy-to-use deep learning optimization software suite.'
+  doc_url: https://deepspeed.readthedocs.io/
+  dev_url: https://github.com/microsoft/DeepSpeed.git
+
+extra:
+  recipe-maintainers:
+    - open-ce/open-ce-dev-team
