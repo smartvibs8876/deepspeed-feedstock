@@ -1,0 +1,25 @@
+tests:
+  - name: Setup DeepSpeed Tests
+    command: |
+        git clone -b v$(python -c "import deepspeed; print(deepspeed.__version__.split('+')[0])") https://github.com/microsoft/DeepSpeed 
+        cd DeepSpeed
+        rm -rf deepspeed
+        conda install -y transformers pytest
+        pip install ninja		
+  - name: Run DeepSpeed tests
+    command: |
+        cd DeepSpeed
+        TESTSUITES_TO_RUN=(
+                      tests/unit/autotuning/test_autotuning.py
+                      tests/unit/launcher/test_ds_arguments.py
+                      tests/unit/launcher/test_run.py
+                      tests/unit/utils/test_get_optim_files.py
+        )
+        for test_suite in "${TESTSUITES_TO_RUN[@]}"
+        do
+           TEST_SUITES+="$test_suite "
+        done
+
+        pytest -v ${TEST_SUITES}		
+  - name: Clean tests
+    command: rm -rf DeepSpeed DeepSpeedExamples
