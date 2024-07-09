@@ -21,10 +21,12 @@ requirements:
     - {{ compiler('c') }}
     - python            {{ python }}
     - pytorch           {{ pytorch }}
+    - cudatoolkit {{ cudatoolkit }}                #[build_type == 'cuda']
   host:
     - pip
     - pytorch           {{ pytorch }}
     - python            {{ python }}
+    - cudatoolkit {{ cudatoolkit }}                #[build_type == 'cuda']
   run:
     - hjson-py
     - ninja             {{ ninja }}
@@ -36,6 +38,7 @@ requirements:
     - pydantic          {{ pydantic }}
     - tqdm              {{ tqdm }}
     - pytorch           {{ pytorch }}
+    - cudatoolkit {{ cudatoolkit }}                #[build_type == 'cuda']
 
 about:
   home: https://github.com/microsoft/DeepSpeed.git 
