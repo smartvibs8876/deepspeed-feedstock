@@ -10,7 +10,7 @@ source:
   git_rev: v{{ version }}
 
 build:
-  number: 1
+  number: 2
   string: cuda{{ cudatoolkit | replace(".*", "") }}_py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }}
   script: DS_BUILD_SPARSE_ATTN=0; DS_BUILD_OPS=1; {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
   script_env:
